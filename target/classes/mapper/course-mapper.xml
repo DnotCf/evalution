@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.myeval.mapper.CourseMapper">
+	<resultMap id="BaseResultMap" type="com.myeval.entity.Course">
+		<id column="id" property="id" jdbcType="INTEGER"/>
+		<result column="course_id" property="courseId" jdbcType="VARCHAR"/>
+		<result column="name" property="name" jdbcType="VARCHAR"/>
+		<result column="class_id" property="classId" jdbcType="INTEGER"/>
+		<result column="teacher_id" property="teacherId" jdbcType="INTEGER"/>
+		<result column="student_evalute" property="openStudentEvaluate" jdbcType="INTEGER"/>
+		<result column="teacher_evalute" property="openTeacherEvaluate" jdbcType="INTEGER"/>
+		<association property="teacher" javaType="com.myeval.entity.Teacher">
+            <id property="id" column="id"/>
+            <result column="teacher_name" property="teacherName"/>
+        </association>
+		<association property="classInfo" javaType="com.myeval.entity.ClassInfo">
+			<id column="id" property="id"/>
+			<result column="class_name" property="className"/>
+			<result column="enter_time" property="enterTime"/>
+		</association>
+	</resultMap>
+	<sql id="Base_Colmmn_List">
+		id, course_id, name, teacher_id, class_id, student_evalute, teacher_evalute
+	</sql>
+	<!-- findAll -->
+	<select id="getCourseList" resultMap="BaseResultMap">
+		select
+		    cou.id,
+		    cou.course_id ,
+		    cou.name ,
+		    cou.class_id,
+		    cou.teacher_id,
+		    tea.teacher_name ,
+		    cla.class_name,
+		    cla.enter_time ,
+		    student_evalute ,
+		    teacher_evalute
+		from
+		    course_info cou
+		inner join
+		    class_info  cla
+		on
+		    cou.class_id = cla.id
+		inner join
+		    teacher_info tea
+		on
+		   cou.teacher_id = tea.id
+		order by
+		   cou.id
+		desc
+	</select>
+
+	<insert id="insert" parameterType="com.myeval.entity.Course">
+		insert into Course_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="courseId!=null">
+				course_id,
+			</if>
+			<if test="name!=null">
+				name,
+			</if>
+			<if test="classId!=null">
+				class_id,
+			</if>
+			<if test="teacherId!=null">
+				teacher_id,
+			</if>
+			<if test="openStudentEvaluate!=null">
+				student_evaluate,
+			</if>
+			<if test="openTeacherEvaluate!=null">
+				teacher_evaluate,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="courseId!=null">
+				#{courseId, jdbcType=VARCHAR},
+			</if>
+			<if test="name!=null">
+				#{name, jdbcType=VARCHAR},
+			</if>
+			<if test="classId!=null">
+				#{classId, jdbcType=INTEGER},
+			</if>
+			<if test="teacherId!=null">
+				#{teacherId, jdbcType=INTEGER},
+			</if>
+			<if test="openStudentEvaluate!=null">
+				#{openStudentEvaluate, jdbcType=INTEGER},
+			</if>
+			<if test="openTeacherEvaluate!=null">
+				#{openTeacherEvaluate, jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+        <update id="update" parameterType="com.myeval.entity.Course">
+            update Course_info
+            <set>
+                <if test="courseId!=null">
+                    course_id = #{courseId, jdbcType=VARCHAR},
+                </if>
+                <if test="name!=null">
+                    name = #{name, jdbcType=VARCHAR},
+                </if>
+                <if test="classId!=null">
+                    class_id = #{classId, jdbcType=INTEGER},
+                </if>
+                <if test="teacherId!=null">
+                    teacher_id = #{teacherId, jdbcType=INTEGER},
+                </if>
+                <if test="openStudentEvaluate!=null">
+                    student_evaluate = #{openStudentEvaluate, jdbcType=INTEGER},
+                </if>
+                <if test="openTeacherEvaluate!=null">
+                    teacher_evaluate = #{openTeacherEvaluate, jdbcType=INTEGER},
+                </if>
+            </set>
+            where
+               id = #{id, jdbcType=INTEGER}
+        </update>
+
+
+            <delete id="delete" parameterType="String">
+                delete from course_info where course_id = #{id}
+            </delete>
+			<update id="stueva" parameterType="String">
+				UPDATE course_info set student_evalute=#{type,jdbcType=INTEGER} where course_id=#{courseid}
+			</update>
+	<!--
+                <select id="selectCourseInfoById" resultMap="BaseResultMap">
+                    select
+                       <include refid="Base_Colmmn_List"/>
+                    from
+                       Course_info
+                    where
+                       id = #{id, jdbcType=INTEGER}
+                </select>
+
+                <update id="setEvaluate" parameterType="java.lang.Integer">
+                    update
+                        Course_info
+                    <set>
+                      <if test="type==1">
+                          open_student_evaluate = #{status, jdbcType=INTEGER}
+                      </if>
+                      <if test="type==2">
+                          open_teacher_evaluate = #{status, jdbcType=INTEGER}
+                      </if>
+                    </set>
+                    where
+                       id = #{id, jdbcType=INTEGER}
+                </update>-->
+	
+
+</mapper>

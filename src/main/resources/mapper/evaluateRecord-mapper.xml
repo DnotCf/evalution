@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.myeval.mapper.EvaluateRecordMapper">
+    <!--<resultMap id="BaseResultMap" type="com.myeval.entity.EvaluateRecord">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="target_id" property="targetId" jdbcType="INTEGER"/>
+        <result column="course_id" property="courseId" jdbcType="INTEGER"/>
+        <result column="is_complete" property="isComplete" jdbcType="INTEGER"/>
+        <result column="evaluate_time" property="evaluateTime" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Colmmn_List">
+        id, type, target_id, course_id, is_complete, evaluate_time
+    </sql>
+    <insert id="insert" useGeneratedKeys="true"  keyProperty="id" parameterType="com.myeval.entity.EvaluateRecord">
+        insert into evaluate_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type!=null">
+                type,
+            </if>
+            <if test="targetId!=null">
+                target_id,
+            </if>
+            <if test="courseId!=null">
+                course_id,
+            </if>
+            <if test="isComplete!=null">
+                is_complete,
+            </if>
+            <if test="evaluateTime!=null">
+                evaluate_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type!=null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="targetId!=null">
+                #{targetId, jdbcType=INTEGER},
+            </if>
+            <if test="courseId!=null">
+                #{courseId, jdbcType=INTEGER},
+            </if>
+            <if test="isComplete!=null">
+                #{isComplete, jdbcType=INTEGER},
+            </if>
+            <if test="evaluateTime!=null">
+                #{evaluateTime, jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectByTypeTargetIdAndCourseId" resultMap="BaseResultMap">
+        select
+           <include refid="Base_Colmmn_List"/>
+        from
+           evaluate_record
+        where
+           type = #{type, jdbcType=INTEGER}
+              and
+           target_id = #{targetId, jdbcType=INTEGER}
+             and
+           course_id = #{courseId, jdbcType=INTEGER}
+        limit 1
+    </select>
+
+    <select id="selectStudentEvalluateRecord" resultType="java.util.Map">
+        select
+             er.id 'id',
+             ci.name 'courseName',
+             er.evaluate_time 'evaluateTime',
+             er.is_complete 'isComplete',
+             ti.name 'teacherName'
+       from evaluate_record er INNER JOIN student_info si on er.target_id = si.id
+            inner join course_info ci on er.course_id = ci.id inner join teacher_info ti on ci.teacher_id = ti.id
+       where er.is_complete!=#{params.isComplete, jdbcType=INTEGER} and er.type=#{params.type, jdbcType=INTEGER} and er.target_id = #{params.targetId, jdbcType=INTEGER}
+    </select>
+
+    <update id="setComplete" parameterType="java.lang.Integer">
+        update
+            evaluate_record
+        set
+           is_complete = #{status, jdbcType=INTEGER}
+        where
+           id = #{id, jdbcType=INTEGER}
+
+    </update>
+
+    <update id="setContent">
+        update evaluate_record set content = #{content, jdbcType=VARCHAR} where id = #{id, jdbcType=INTEGER}
+    </update>-->
+</mapper>
