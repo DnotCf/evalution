@@ -9,7 +9,7 @@ spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/xve?useUnicode=true&characterEncoding=UTF-8
     username: root
-    password: 123456
+    password: 1234567
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSourceC3P0Adapter
   devtools:
