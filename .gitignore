@@ -19,7 +19,7 @@
 
 #maven ignore
 target/
-
+target/
 ### NetBeans ###
 /nbproject/private/
 /build/
